@@ -1,11 +1,13 @@
 import pytest
+
 from selenium import webdriver
+
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
+
 
 def pytest_addoption(parser):
-    parser.addoption('--browser_name', action='store', default="Yandex",
-                     help="Выберите браузер: Yandex или Firefox")
+    parser.addoption('--browser_name', action='store', default="Chrome",
+                     help="Выберите браузер: Chrome или Firefox")
     parser.addoption('--language', action='store', default="en",
                      help="Выберите язык: ru, en or fr")
 
@@ -15,15 +17,11 @@ def browser(request):
     browser_name = request.config.getoption("browser_name")
     user_language = request.config.getoption("language")
     browser = None
-    if browser_name == "Yandex":
-        binary_yandex_driver_file = r'C:\chromedriver\yandexdriver.exe'
-        service = Service (executable_path=binary_yandex_driver_file)
+    if browser_name == "Chrome":
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': user_language})
-        print("\nЗапуск браузера Yandex для теста..")
-        browser = webdriver.Chrome(service=service, options=options)
-        browser.maximize_window()
-        
+        print("\nЗапуск браузера Chrome для теста..")
+        browser = webdriver.Chrome(options=options)
     elif browser_name == "Firefox":
         fp = webdriver.FirefoxProfile()
         fp.set_preference("intl.accept_languages", user_language)
