@@ -5,10 +5,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .locators import BasePageLocators
+from .locators import BasketPageLocators
 import math
 
 class BasePage():
-    def __init__(self, browser, url,timeout=15):
+    def __init__(self, browser, url, timeout=15):
         self.browser = browser
         self.url = url
         self.browser.implicitly_wait(timeout)
@@ -55,8 +56,15 @@ class BasePage():
         return True
     
     def go_to_login_page(self):
-        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK_INVALID)
+        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         link.click()
 
     def should_be_login_link(self):
-        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
+        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Ссылка логина не найдена"
+
+    def open_basket_page(self):
+        busket_open_btn = self.browser.find_element(*BasketPageLocators.BASKET_BUTTON)
+        busket_open_btn.click()
+        
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "Пользователь не залогинен"
